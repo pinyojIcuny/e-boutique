@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>MaBoutique E-Commerce</title>
+  <link rel="icon" type="image/png" href="https://via.placeholder.com/32.png" sizes="32x32">
+  <link rel="manifest" href="site.webmanifest">
+  <base href="https://lien.maboutique/e-commerce.fr/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      display: flex;
+      background: #f3f4f6;
+      color: #333;
+    }
+    nav {
+      position: fixed;
+      width: 220px;
+      height: 100vh;
+      background: #1f2937;
+      color: white;
+      padding: 30px 20px;
+      overflow-y: auto;
+    }
+    nav h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    nav a {
+      display: block;
+      color: #d1d5db;
+      margin: 10px 0;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    nav a:hover {
+      background: #374151;
+    }
+    main {
+      margin-left: 240px;
+      padding: 40px;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    .section {
+      margin-bottom: 60px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .section h2 {
+      font-size: 24px;
+      color: #111827;
+      margin-bottom: 10px;
+    }
+    .voir-detail-section {
+      margin-bottom: 10px;
+    }
+    .voir-detail-section button,
+    .voir-fichier-button {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .voir-detail-section button:hover,
+    .voir-fichier-button:hover {
+      background: #2563eb;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 20px;
+      padding-bottom: 10px;
+    }
+    .carousel::-webkit-scrollbar {
+      height: 8px;
+    }
+    .carousel::-webkit-scrollbar-thumb {
+      background: #9ca3af;
+      border-radius: 10px;
+    }
+    .ui-card {
+      flex: 0 0 300px;
+      scroll-snap-align: start;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: relative;
+      transition: box-shadow 0.3s;
+    }
+    .ui-card h4 {
+      margin: 0 0 8px;
+      color: #111827;
+      font-size: 18px;
+    }
+    .ui-card p {
+      margin: 0;
+      font-size: 14px;
+      color: #4b5563;
+    }
+    .details {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-top: 10px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+    .details.show {
+      max-height: 1000px;
+      opacity: 1;
+    }
+    .details h3 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #111827;
+    }
+    .details a {
+      display: inline-block;
+      margin-right: 15px;
+      margin-top: 10px;
+      text-decoration: none;
+      background: #3b82f6;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    .details a:hover {
+      background: #2563eb;
+    }
+    .media-preview {
+      margin-top: 20px;
+    }
+    .media-preview img {
+      width: 200px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+    .media-preview video {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    .media-preview iframe {
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 400px;
+      height: 250px;
+    }
+    .media-preview .text-document {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f9fafb;
+      border-left: 4px solid #3b82f6;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h3>📚 Navigation</h3>
+    <a href="#section-ebooks">📘 Ebooks</a>
+    <a href="#section-livres">📚 Livres</a>
+    <a href="#section-audios">🎧 Audios</a>
+    <a href="#section-videos">🎥 Vidéos</a>
+    <a href="#section-fichiers">📂 Fichiers</a>
+    <a href="#section-formations">🧑‍🏫 Formations</a>
+  </nav>
+
+  <main>
+    <script>
+      const sections = ['ebooks', 'livres', 'audios', 'videos', 'fichiers', 'formations'];
+
+      function createSection(section) {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = `section section-${section}`;
+        sectionDiv.id = `section-${section}`;
+        sectionDiv.innerHTML = `
+          <h2>📂 ${section.charAt(0).toUpperCase() + section.slice(1)}</h2>
+          <div class="voir-detail-section">
+            <button onclick="toggleSectionDetails('section-${section}')">📖 Voir l'ensemble des détails</button>
+          </div>
+          <div class="carousel"></div>
+        `;
+        document.querySelector('main').appendChild(sectionDiv);
+
+        const container = sectionDiv.querySelector('.carousel');
+        for (let i = 1; i <= 10; i++) {
+          const ebookId = `${section}_ebook${i}`;
+          const detailId = `details_${ebookId}`;
+
+          const card = document.createElement('div');
+          card.className = 'ui-card';
+          card.id = `card_${ebookId}`;
+
+          card.innerHTML = `
+            <h4>${section.charAt(0).toUpperCase() + section.slice(1)} ${i}</h4>
+            <p>Contenu exclusif ${i} avec stratégie et valeur.</p>
+            <button class="voir-fichier-button" onclick="showOnly('${ebookId}')">📁 Voir ce fichier</button>
+            <div class="details" id="${detailId}">
+              <h3>Détail ${i}</h3>
+              <p>Description du contenu ${i} pour ${section}.</p>
+              <a href="https://paypal.com" target="_blank">💳 PayPal</a>
+              <a href="https://ko-fi.com" target="_blank">☕ Ko-fi</a>
+              <div class="media-preview">
+                <img src="https://via.placeholder.com/200x120.png?text=Image+${i}" alt="Preview">
+                <video controls>
+                  <source src="sample-video.mp4" type="video/mp4">
+                </video>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRrIrzvQfMR5Uj4_Example/embed?gid=0&single=true&widget=true&headers=false" allowfullscreen></iframe>
+                <div class="text-document">
+                  Texte exemple du fichier ${i} :\n- Objectif\n- Plan d’action\n- Résultats attendus
+                </div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        }
+      }
+
+      sections.forEach(createSection);
+
+      function toggleSectionDetails(sectionClass) {
+        const section = document.querySelector(`.${sectionClass}`);
+        const details = section.querySelectorAll('.details');
+        const anyVisible = [...details].some(el => el.classList.contains('show'));
+        details.forEach(el => el.classList.toggle('show', !anyVisible));
+      }
+
+      function showOnly(ebookId) {
+        document.querySelectorAll('.details').forEach(el => el.classList.remove('show'));
+        const detail = document.getElementById(`details_${ebookId}`);
+        if (detail) detail.classList.add('show');
+      }
+       // Enregistrement du service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('SW enregistré:', reg.scope))
+          .catch(err => console.error('SW erreur:', err));
+      });
+    }
+  
+    </script>
+  </main>
+</body>
+</html>
